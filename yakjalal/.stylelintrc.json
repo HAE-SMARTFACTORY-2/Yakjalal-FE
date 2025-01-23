@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-recommended-vue/scss",
+    "stylelint-config-prettier-scss"
+  ],
+  "overrides": [
+    {
+      "files": ["*.vue", "**/*.vue"],
+      "rules": {
+        "unit-allowed-list": ["%", "px", "rem", "em"]
+      }
+    }
+  ]
+}
