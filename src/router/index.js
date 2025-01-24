@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Search from "../components/Search/Search.vue";
 import Register from "../components/Register/Register.vue";
-import Main from "../components/Main/main.vue";
+import Main from "../components/Main/Main.vue";
 import Onboarding from "../components/OnBoarding/Onboarding.vue";
 import Login from "../components/OnBoarding/Login.vue";
 import RegisterResult from "../components/Register/Register-result.vue";
