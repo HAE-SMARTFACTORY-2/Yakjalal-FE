@@ -105,7 +105,7 @@ const handleRecognize = async () => {
     isProcessing.value = true;
     // 여기에 실제 이미지 인식 API 호출 로직 추가
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push("/recognition-result");
+    router.push("/ocr-result"); // OCR 결과 페이지로 이동 (약 봉투 등록 시)
   } catch (error) {
     uploadError.value = "이미지 인식 중 오류가 발생했습니다.";
     console.error("Recognition error:", error);

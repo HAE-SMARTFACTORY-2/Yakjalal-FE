@@ -8,12 +8,12 @@ import Login from "../components/OnBoarding/Login.vue";
 const routes = [
   {
     path: "/",
-    component: Login,
+    component: Onboarding,
     meta: { hideNavBar: true },
   },
   {
     path: "/login",
-    component: Onboarding,
+    component: Login,
     meta: { hideNavBar: true },
   },
   {
