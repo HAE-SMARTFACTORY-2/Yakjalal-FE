@@ -58,11 +58,12 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 
 const todayMedications = ref({});
-const currentMedications = ref([]);
+const currentMedications = ref({});
 const isLoading = ref(false);
 
 // 오늘의 복용약 스케줄 API
@@ -71,30 +72,23 @@ const fetchTodayMedications = async () => {
 
   try {
     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    const response = await fetch(`${BASE_URL}/today`, {
+    const response = await axios.get(`${BASE_URL}/today`, {
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
       },
     });
 
-    if (!response.ok) {
-      throw new Error("데이터를 불러오는데 실패했습니다.");
-    }
-
-    const data = await response.json();
-    todayMedications.value = data.today;
+    todayMedications.value = response.data.today;
   } catch (error) {
     console.error("API 요청 오류:", error);
-    const Mode = import.meta.env.VITE_API_MODE;
-    if (Mode === "development") {
-      console.error("임시 데이터를 사용합니다.");
+    if (import.meta.env.DEV) {
       todayMedications.value = {
         아침: ["마이칼디정", "가스파플러스정"],
         점심: ["바르탄정", "제이코정"],
         저녁: ["단나에프캡슐", "하드코프캡슐"],
       };
     } else {
-      console.error("API 요청 오류로 인해 데이터를 초기화합니다.");
       todayMedications.value = {};
     }
   } finally {
@@ -102,53 +96,89 @@ const fetchTodayMedications = async () => {
   }
 };
 
+// 복용중인 약 목록 API
+// const fetchMyMedications = async () => {
+//   isLoading.value = true;
+
+//   try {
+//     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+//     const response = await axios.get(`${BASE_URL}/medicine`, {
+//       headers: {
+//         "Content-Type": "application/json",
+//         "ngrok-skip-browser-warning": "true",
+//       },
+//     });
+
+//     currentMedications.value = response.data.currentMedications;
+//   } catch (error) {
+//     console.error("API 요청 오류:", error);
+//     if (import.meta.env.DEV) {
+//       currentMedications.value = [
+//         {
+//           id: "1",
+//           name: "가두에정",
+//           type: "항악성종양제",
+//           image:
+//             "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
+//         },
+//         {
+//           id: "2",
+//           name: "항생제",
+//           type: "항악성종양제",
+//           image:
+//             "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
+//         },
+//         {
+//           id: "3",
+//           name: "가두에정",
+//           type: "항악성종양제",
+//           image:
+//             "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
+//         },
+//       ];
+//     } else {
+//       currentMedications.value = [];
+//     }
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
+
 const fetchMyMedications = async () => {
   isLoading.value = true;
 
   try {
     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    const response = await fetch(`${BASE_URL}/medicine`, {
+    const response = await axios.get(`${BASE_URL}/medicine`, {
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
       },
     });
 
-    if (!response.ok) {
-      throw new Error("데이터를 불러오는데 실패했습니다.");
-    }
+    console.log("API 응답:", response.data); // 디버깅용
 
-    const data = await response.json();
-    currentMedications.value = data.currentMedications;
+    if (response.data?.current_medications) {
+      currentMedications.value = response.data.current_medications;
+    } else {
+      console.error("current_medications 데이터가 없습니다");
+      currentMedications.value = [];
+    }
   } catch (error) {
     console.error("API 요청 오류:", error);
-    const Mode = import.meta.env.VITE_API_MODE;
-    if (Mode === "development") {
-      console.error("임시 데이터를 사용합니다.");
+
+    if (import.meta.env.DEV) {
+      // 개발환경 테스트 데이터
       currentMedications.value = [
         {
-          id: "1",
-          name: "가두에정",
-          type: "항악성종양제",
+          id: 200809361,
+          name: "바르탄정(발사르탄)",
+          type: "혈압강하제",
           image:
-            "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
-        },
-        {
-          id: "2",
-          name: "항생제",
-          type: "항악성종양제",
-          image:
-            "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-        },
-        {
-          id: "3",
-          name: "가두에정",
-          type: "항악성종양제",
-          image:
-            "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
+            "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/147426403087300155",
         },
       ];
     } else {
-      console.error("API 요청 오류로 인해 데이터를 초기화합니다.");
       currentMedications.value = [];
     }
   } finally {
@@ -160,30 +190,6 @@ onMounted(() => {
   fetchTodayMedications();
   fetchMyMedications();
 });
-
-// const currentMedications = ref([
-//   {
-//     id: "1",
-//     name: "가두에정",
-//     type: "항악성종양제",
-//     image:
-//       "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
-//   },
-//   {
-//     id: "2",
-//     name: "가두에정",
-//     type: "항악성종양제",
-//     image:
-//       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-//   },
-//   {
-//     id: "3",
-//     name: "가두에정",
-//     type: "항악성종양제",
-//     image:
-//       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-//   },
-// ]);
 
 function getPeriodEmoji(period) {
   const emojis = {
