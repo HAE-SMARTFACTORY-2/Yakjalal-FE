@@ -124,14 +124,6 @@ const goBack = () => router.back();
   display: flex;
   flex-direction: column;
 
-  .status-bar {
-    background: #26a69a;
-    color: white;
-    padding: 5px 15px;
-    display: flex;
-    justify-content: space-between;
-  }
-
   .header {
     background: #26a69a;
     color: white;
@@ -163,7 +155,9 @@ const goBack = () => router.back();
     gap: 20px;
 
     .guide-text {
-      text-align: center;
+      text-align: left;
+      font-weight: bold;
+      font-size: 20px;
       color: #333;
     }
 
