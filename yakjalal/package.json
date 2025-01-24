@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "yakjalal",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,14 @@
     "stylelint": "stylelint --ignore-path .gitignore '**/*.vue' '**/*.scss' --fix"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^1.7.9",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "element-plus": "^2.9.3",
     "pinia": "^2.2.2",
-    "vue": "^3.4.37"
+    "vue": "^3.4.37",
+    "vue-router": "^4.0.13"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",
