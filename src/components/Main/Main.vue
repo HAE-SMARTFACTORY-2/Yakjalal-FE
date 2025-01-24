@@ -45,7 +45,7 @@
           @click="navigateToInfo(med.id)"
         >
           <div class="med-info">
-            <h3>{{ med.name }} (품목명)</h3>
+            <h3>{{ med.name }}</h3>
             <p>분류: {{ med.type }}</p>
           </div>
           <img :src="med.image" :alt="med.name" class="med-image" />
@@ -62,6 +62,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const todayMedications = ref({});
+const currentMedications = ref([]);
 const isLoading = ref(false);
 
 // 오늘의 복용약 스케줄 API
@@ -101,33 +102,88 @@ const fetchTodayMedications = async () => {
   }
 };
 
+const fetchMyMedications = async () => {
+  isLoading.value = true;
+
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const response = await fetch(`${BASE_URL}/medicine`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("데이터를 불러오는데 실패했습니다.");
+    }
+
+    const data = await response.json();
+    currentMedications.value = data.currentMedications;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    const Mode = import.meta.env.VITE_API_MODE;
+    if (Mode === "development") {
+      console.error("임시 데이터를 사용합니다.");
+      currentMedications.value = [
+        {
+          id: "1",
+          name: "가두에정",
+          type: "항악성종양제",
+          image:
+            "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
+        },
+        {
+          id: "2",
+          name: "항생제",
+          type: "항악성종양제",
+          image:
+            "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
+        },
+        {
+          id: "3",
+          name: "가두에정",
+          type: "항악성종양제",
+          image:
+            "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
+        },
+      ];
+    } else {
+      console.error("API 요청 오류로 인해 데이터를 초기화합니다.");
+      currentMedications.value = [];
+    }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
 onMounted(() => {
   fetchTodayMedications();
+  fetchMyMedications();
 });
 
-const currentMedications = ref([
-  {
-    id: "1",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
-  },
-  {
-    id: "2",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-  {
-    id: "3",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-]);
+// const currentMedications = ref([
+//   {
+//     id: "1",
+//     name: "가두에정",
+//     type: "항악성종양제",
+//     image:
+//       "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
+//   },
+//   {
+//     id: "2",
+//     name: "가두에정",
+//     type: "항악성종양제",
+//     image:
+//       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
+//   },
+//   {
+//     id: "3",
+//     name: "가두에정",
+//     type: "항악성종양제",
+//     image:
+//       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
+//   },
+// ]);
 
 function getPeriodEmoji(period) {
   const emojis = {
