@@ -66,8 +66,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 const route = useRoute();
@@ -75,22 +76,56 @@ const goBack = () => router.back();
 
 const medId = route.params.id;
 
-// API 전 임시데이터입니다 !!
-const medicineInfo = ref({
-  medicine_info: [
-    {
-      appearance: "엷은 적색의 원형 필름코팅정",
-      bigSize: 6.5,
-      classification: "전문의약품",
-      image:
-        "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/147426403087300155",
-      name: "바르탄정(발사르탄)",
-      shape: "원형",
-      smallSize: 6.5,
-      thick: 1.8,
-      type: "혈압강하제",
-    },
-  ],
+const medicineInfo = ref({});
+const isLoading = ref(false);
+
+// 약 상세 조회  API
+const fetchMedicineInfo = async () => {
+  isLoading.value = true;
+
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    console.log("요청 URL:", `${BASE_URL}/medicine/${medId}`); // 디버깅용
+
+    const response = await axios.get(`${BASE_URL}/medicine/${medId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
+
+    console.log("API 응답:", response.data); // 디버깅용
+    medicineInfo.value = response.data;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+
+    if (import.meta.env.DEV) {
+      medicineInfo.value = {
+        medicine_info: [
+          {
+            appearance: "엷은 적색의 원형 필름코팅정",
+            bigSize: 6.5,
+            classification: "전문의약품",
+            image:
+              "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/147426403087300155",
+            name: "바르탄정(발사르탄)",
+            shape: "원형",
+            smallSize: 6.5,
+            thick: 1.8,
+            type: "혈압강하제",
+          },
+        ],
+      };
+    } else {
+      medicineInfo.value = {};
+    }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchMedicineInfo();
 });
 </script>
 

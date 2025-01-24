@@ -45,7 +45,7 @@
           @click="navigateToInfo(med.id)"
         >
           <div class="med-info">
-            <h3>{{ med.name }} (품목명)</h3>
+            <h3>{{ med.name }}</h3>
             <p>분류: {{ med.type }}</p>
           </div>
           <img :src="med.image" :alt="med.name" class="med-image" />
@@ -56,41 +56,87 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 
-// API 전 임시데이터입니다 !!
-const todayMedications = ref({
-  아침: ["마이칼디정", "가스파플러스정", "코큐렉스연질캡슐", "선콜정"],
-  저녁: ["단나에프캡슐", "하드코프캡슐", "비타콜드정"],
-  점심: ["바르탄정(발사르탄)", "제이코정"],
-});
+const todayMedications = ref({});
+const currentMedications = ref({});
+const isLoading = ref(false);
 
-const currentMedications = ref([
-  {
-    id: "1",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
-  },
-  {
-    id: "2",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-  {
-    id: "3",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-]);
+// 오늘의 복용약 스케줄 API
+const fetchTodayMedications = async () => {
+  isLoading.value = true;
+
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const response = await axios.get(`${BASE_URL}/today`, {
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
+
+    todayMedications.value = response.data.today;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    if (import.meta.env.DEV) {
+      todayMedications.value = {
+        아침: ["마이칼디정", "가스파플러스정"],
+        점심: ["바르탄정", "제이코정"],
+        저녁: ["단나에프캡슐", "하드코프캡슐"],
+      };
+    } else {
+      todayMedications.value = {};
+    }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const fetchMyMedications = async () => {
+  isLoading.value = true;
+
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const response = await axios.get(`${BASE_URL}/medicine`, {
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
+
+    if (response.data?.current_medications) {
+      currentMedications.value = response.data.current_medications;
+    } else {
+      currentMedications.value = [];
+    }
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    if (import.meta.env.DEV) {
+      currentMedications.value = [
+        {
+          id: 200809361,
+          name: "바르탄정(발사르탄)",
+          type: "혈압강하제",
+          image:
+            "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/147426403087300155",
+        },
+      ];
+    } else {
+      currentMedications.value = [];
+    }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchTodayMedications();
+  fetchMyMedications();
+});
 
 function getPeriodEmoji(period) {
   const emojis = {
