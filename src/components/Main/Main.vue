@@ -1,11 +1,17 @@
 <template>
   <div class="medication-page">
     <header class="header">
+      <img src="/yakjalal_icon.png" alt="약잘알" class="logo" />
+      <h1>약잘알</h1>
+    </header>
+
+    <section class="welcome-section">
+      <img src="/person-icon.png" alt="약잘알" class="icon" />
       <div class="user-info">
         <h1>최영린 님</h1>
         <p>오늘도 약 잘 챙겨드세요 💊</p>
       </div>
-    </header>
+    </section>
 
     <section class="time-sections">
       <div class="time-container">
@@ -104,11 +110,48 @@ const navigateToInfo = (id) => {
 
 <style scoped lang="scss">
 .medication-page {
-  padding: 20px;
   background: #fff;
   min-height: 100vh;
+  padding-bottom: 80px;
 
   .header {
+    background: #26a69a;
+    color: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    h1 {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .welcome-section {
+    padding: 20px;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    .icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 12px;
+    }
+
     .user-info {
       position: relative;
 
@@ -135,6 +178,8 @@ const navigateToInfo = (id) => {
   }
 
   .time-sections {
+    padding: 20px;
+    padding-top: 0;
     margin: 30px 0;
 
     .time-container {
@@ -173,7 +218,12 @@ const navigateToInfo = (id) => {
   }
 
   .current-medications {
+    padding: 20px;
+    padding-top: 0;
+
     .med-list {
+      padding-top: 10px;
+
       .med-item {
         background: #26a6997d;
         border-radius: 10px;
