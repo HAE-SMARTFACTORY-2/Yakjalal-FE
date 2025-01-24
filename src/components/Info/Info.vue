@@ -100,6 +100,7 @@ const medicineInfo = ref({
   background: #f5f5f5;
   display: flex;
   flex-direction: column;
+  padding-bottom: 80px;
 
   .header {
     background: #26a69a;
