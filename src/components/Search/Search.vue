@@ -198,7 +198,6 @@ const goBack = () => router.back();
     }
 
     .recognize-btn {
-      margin-top: auto;
       margin-bottom: 60px;
       padding: 15px;
       border-radius: 8px;

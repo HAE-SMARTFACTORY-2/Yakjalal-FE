@@ -167,7 +167,6 @@ const handleRegister = async () => {
       display: flex;
       justify-content: space-between;
       gap: 20px;
-      margin-top: auto;
       margin-bottom: 60px;
 
       .btn {
