@@ -7,15 +7,51 @@
       <h1>복용약 검색</h1>
     </header>
 
-    <main class="main-content"></main>
+    <main class="main-content">
+      <h3 class="guide-text">인식 결과</h3>
+      <div class="med-list">
+        <div v-for="med in currentMedications" :key="med.id" class="med-item">
+          <div class="med-info">
+            <h3>{{ med.name }} (품목명)</h3>
+            <p>분류: {{ med.type }}</p>
+          </div>
+          <img :src="med.image" :alt="med.name" class="med-image" />
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const goBack = () => router.back();
+
+// API 전 임시데이터입니다 !!
+const currentMedications = ref([
+  {
+    id: "mock-1",
+    name: "가두에정",
+    type: "항악성종양제",
+    image:
+      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
+  },
+  {
+    id: "mock-2",
+    name: "가두에정",
+    type: "항악성종양제",
+    image: "yakjalal/src/assets/medi1.jpg",
+  },
+  {
+    id: "mock-1",
+    name: "가두에정",
+    type: "항악성종양제",
+    image:
+      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
+  },
+]);
 </script>
 
 <style lang="scss" scoped>
@@ -45,6 +81,52 @@ const goBack = () => router.back();
     h1 {
       font-size: 1.2rem;
       margin: 0;
+    }
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .guide-text {
+      text-align: left;
+      font-weight: bold;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .med-list {
+      margin: 10px;
+      .med-item {
+        background: #26a6997d;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .med-info {
+          h3 {
+            margin: 0;
+            font-size: 1rem;
+          }
+
+          p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 0.9rem;
+          }
+        }
+
+        .med-image {
+          width: 60px;
+          height: 30px;
+          object-fit: contain;
+        }
+      }
     }
   }
 }
