@@ -6,6 +6,7 @@ import Onboarding from "../components/OnBoarding/Onboarding.vue";
 import Login from "../components/OnBoarding/Login.vue";
 import RegisterResult from "../components/Register/Register-result.vue";
 import SearchResult from "../components/Search/Search-result.vue";
+import Info from "../components/Info/Info.vue";
 
 const routes = [
   {
@@ -42,6 +43,11 @@ const routes = [
     path: "/search-result",
     name: "Search-Result",
     component: SearchResult,
+  },
+  {
+    path: "/info/{id}",
+    name: "Info",
+    component: Info,
   },
 ];
 
