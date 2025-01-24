@@ -2,7 +2,7 @@
   <div class="onboarding">
     <div class="content">
       <img
-        src="/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/yakjalal_icon.png"
+        src="/yakjalal_icon.png"
         alt="약잘알"
         class="logo"
       />
