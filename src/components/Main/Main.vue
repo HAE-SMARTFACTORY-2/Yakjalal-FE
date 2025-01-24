@@ -56,16 +56,53 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-// API 전 임시데이터입니다 !!
-const todayMedications = ref({
-  아침: ["마이칼디정", "가스파플러스정", "코큐렉스연질캡슐", "선콜정"],
-  저녁: ["단나에프캡슐", "하드코프캡슐", "비타콜드정"],
-  점심: ["바르탄정(발사르탄)", "제이코정"],
+const todayMedications = ref({});
+const isLoading = ref(false);
+
+// 오늘의 복용약 스케줄 API
+const fetchTodayMedications = async () => {
+  isLoading.value = true;
+
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const response = await fetch(`${BASE_URL}/today`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("데이터를 불러오는데 실패했습니다.");
+    }
+
+    const data = await response.json();
+    todayMedications.value = data.today;
+  } catch (error) {
+    console.error("API 요청 오류:", error);
+    const Mode = import.meta.env.VITE_API_MODE;
+    if (Mode === "development") {
+      console.error("임시 데이터를 사용합니다.");
+      todayMedications.value = {
+        아침: ["마이칼디정", "가스파플러스정"],
+        점심: ["바르탄정", "제이코정"],
+        저녁: ["단나에프캡슐", "하드코프캡슐"],
+      };
+    } else {
+      console.error("API 요청 오류로 인해 데이터를 초기화합니다.");
+      todayMedications.value = {};
+    }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  fetchTodayMedications();
 });
 
 const currentMedications = ref([
