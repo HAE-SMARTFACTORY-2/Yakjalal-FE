@@ -33,7 +33,12 @@
     <section class="current-medications">
       <h2>복용중인 약</h2>
       <div class="med-list">
-        <div v-for="med in currentMedications" :key="med.id" class="med-item">
+        <div
+          v-for="med in currentMedications"
+          :key="med.id"
+          class="med-item"
+          @click="navigateToInfo(med.id)"
+        >
           <div class="med-info">
             <h3>{{ med.name }} (품목명)</h3>
             <p>분류: {{ med.type }}</p>
@@ -47,6 +52,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // API 전 임시데이터입니다 !!
 const todayMedications = ref({
@@ -57,21 +65,21 @@ const todayMedications = ref({
 
 const currentMedications = ref([
   {
-    id: "mock-1",
+    id: "1",
+    name: "가두에정",
+    type: "항악성종양제",
+    image:
+      "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
+  },
+  {
+    id: "2",
     name: "가두에정",
     type: "항악성종양제",
     image:
       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
   },
   {
-    id: "mock-2",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-  {
-    id: "mock-1",
+    id: "3",
     name: "가두에정",
     type: "항악성종양제",
     image:
@@ -87,6 +95,11 @@ function getPeriodEmoji(period) {
   };
   return emojis[period] || "";
 }
+
+const navigateToInfo = (id) => {
+  console.log(id);
+  router.push({ name: "Info", params: { id } });
+};
 </script>
 
 <style scoped lang="scss">
