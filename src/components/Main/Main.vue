@@ -61,20 +61,21 @@ const currentMedications = ref([
     name: "가두에정",
     type: "항악성종양제",
     image:
-      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
+      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
   },
   {
     id: "mock-2",
     name: "가두에정",
     type: "항악성종양제",
-    image: "yakjalal/src/assets/medi1.jpg",
+    image:
+      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
   },
   {
     id: "mock-1",
     name: "가두에정",
     type: "항악성종양제",
     image:
-      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
+      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
   },
 ]);
 
@@ -183,8 +184,8 @@ function getPeriodEmoji(period) {
         }
 
         .med-image {
-          width: 60px;
-          height: 30px;
+          width: 100px;
+          height: 50px;
           object-fit: contain;
         }
       }
