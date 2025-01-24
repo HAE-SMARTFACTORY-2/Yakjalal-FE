@@ -61,7 +61,7 @@ const currentMedications = ref([
     name: "가두에정",
     type: "항악성종양제",
     image:
-      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/yakjalal/src/assets/medi1.jpg",
+      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
   },
   {
     id: "mock-2",
@@ -74,7 +74,7 @@ const currentMedications = ref([
     name: "가두에정",
     type: "항악성종양제",
     image:
-      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/yakjalal/src/assets/medi1.jpg",
+      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
   },
 ]);
 
@@ -143,7 +143,7 @@ function getPeriodEmoji(period) {
 
           .med-button {
             padding: 8px;
-            border: 1px solid #4caf50;
+            border: 1px solid #26a69a;
             border-radius: 20px;
             background: #fff;
             font-size: 0.9rem;
@@ -161,7 +161,7 @@ function getPeriodEmoji(period) {
   .current-medications {
     .med-list {
       .med-item {
-        background: #e8f5e9;
+        background: #26a6997d;
         border-radius: 10px;
         padding: 15px;
         margin-bottom: 10px;
