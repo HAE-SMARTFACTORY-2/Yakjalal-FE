@@ -1,29 +1,26 @@
-<!-- <template>
-  <div>
-    <h1 class="title">약잘알</h1>
-    <Navbar>
-    </Navbar>
+<template>
+  <div id="app">
+    <router-view />
+    <NavBar v-if="!hideNavBar" />
   </div>
 </template>
 
 <script setup>
-import Navbar from "./components/About/AboutComponent.vue";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import NavBar from "./components/Common/navbar.vue";
+
+const route = useRoute();
+const hideNavBar = computed(() => route.meta.hideNavBar);
 </script>
 
-
-<style lang="scss" scoped>
-.title {
-  color: #333;
+<style>
+body,
+html,
+#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
 }
-</style> -->
-<template>
-  <div id="app">
-    <router-view />
-  </div>
-</template>
-
-<script>
-export default {
-  name: "App",
-};
-</script>
+</style>

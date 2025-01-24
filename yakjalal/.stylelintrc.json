@@ -8,7 +8,7 @@
     {
       "files": ["*.vue", "**/*.vue"],
       "rules": {
-        "unit-allowed-list": ["%", "px", "rem", "em"]
+        "unit-allowed-list": ["%", "px", "rem", "em", "s", "vh"]
       }
     }
   ]

@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <h1 class="title">약 검색</h1>
+    <h1 class="title">로그인</h1>
   </div>
 </template>
 
