@@ -15,7 +15,7 @@
         <div v-for="med in currentMedications" :key="med.id" class="med-item">
           <div class="med-info">
             <h3>{{ med.name }} (품목명)</h3>
-            <p>분류: {{ med.type }}</p>
+            <p>투여횟수: {{ med.type }}</p>
           </div>
           <img :src="med.image" :alt="med.name" class="med-image" />
         </div>
@@ -41,21 +41,21 @@ const currentMedications = ref([
   {
     id: "mock-1",
     name: "가두에정",
-    type: "항악성종양제",
+    type: "1일3회5일분",
     image:
       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
   },
   {
     id: "mock-2",
     name: "가두에정",
-    type: "항악성종양제",
+    type: "1일3회5일분",
     image:
       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
   },
   {
     id: "mock-1",
     name: "가두에정",
-    type: "항악성종양제",
+    type: "1일3회5일분",
     image:
       "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
   },
