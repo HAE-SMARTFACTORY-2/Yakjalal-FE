@@ -5,15 +5,14 @@
       <h1>약잘알</h1>
     </header>
 
-    <section class="welcome-section">
-      <img src="/person-icon.png" alt="약잘알" class="icon" />
-      <div class="user-info">
-        <h1>최영린 님</h1>
-        <p>오늘도 약 잘 챙겨드세요 💊</p>
-      </div>
-    </section>
-
     <section class="time-sections">
+      <div class="user-profile">
+        <img src="/person-icon.png" alt="프로필" class="profile-icon" />
+        <div class="user-info">
+          <h1>최영린 님</h1>
+          <p>오늘도 약 잘 챙겨드세요 💊</p>
+        </div>
+      </div>
       <div class="time-container">
         <div
           v-for="(meds, period) in todayMedications"
@@ -136,51 +135,42 @@ const navigateToInfo = (id) => {
     }
   }
 
-  .welcome-section {
-    padding: 20px;
-    padding-bottom: 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-
-    .icon {
-      width: 80px;
-      height: 80px;
-      margin-bottom: 12px;
-    }
-
-    .user-info {
-      position: relative;
-
-      h1 {
-        font-size: 1.5rem;
-        margin: 0;
-      }
-
-      p {
-        color: #666;
-        margin: 5px 0;
-      }
-
-      .notification-btn {
-        position: absolute;
-        right: 0;
-        top: 0;
-        background: none;
-        border: none;
-        font-size: 1.2rem;
-        cursor: pointer;
-      }
-    }
-  }
-
   .time-sections {
     padding: 20px;
     padding-top: 0;
     margin: 30px 0;
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding: 0 4px;
+
+      .profile-icon {
+        width: 72px;
+        height: 72px;
+        flex-shrink: 0;
+        object-fit: cover;
+      }
+
+      .user-info {
+        flex: 1;
+
+        h1 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin: 0;
+          color: #333;
+        }
+
+        p {
+          color: #666;
+          margin: 4px 0 0;
+          font-size: 0.95rem;
+        }
+      }
+    }
 
     .time-container {
       display: flex;
