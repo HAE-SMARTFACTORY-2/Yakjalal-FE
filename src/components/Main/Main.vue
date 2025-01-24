@@ -96,54 +96,6 @@ const fetchTodayMedications = async () => {
   }
 };
 
-// 복용중인 약 목록 API
-// const fetchMyMedications = async () => {
-//   isLoading.value = true;
-
-//   try {
-//     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-//     const response = await axios.get(`${BASE_URL}/medicine`, {
-//       headers: {
-//         "Content-Type": "application/json",
-//         "ngrok-skip-browser-warning": "true",
-//       },
-//     });
-
-//     currentMedications.value = response.data.currentMedications;
-//   } catch (error) {
-//     console.error("API 요청 오류:", error);
-//     if (import.meta.env.DEV) {
-//       currentMedications.value = [
-//         {
-//           id: "1",
-//           name: "가두에정",
-//           type: "항악성종양제",
-//           image:
-//             "https://nedrug.mfds.go.kr/pbp/cmn/itemImageDownload/150834126208100152",
-//         },
-//         {
-//           id: "2",
-//           name: "항생제",
-//           type: "항악성종양제",
-//           image:
-//             "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-//         },
-//         {
-//           id: "3",
-//           name: "가두에정",
-//           type: "항악성종양제",
-//           image:
-//             "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-//         },
-//       ];
-//     } else {
-//       currentMedications.value = [];
-//     }
-//   } finally {
-//     isLoading.value = false;
-//   }
-// };
-
 const fetchMyMedications = async () => {
   isLoading.value = true;
 
@@ -156,19 +108,14 @@ const fetchMyMedications = async () => {
       },
     });
 
-    console.log("API 응답:", response.data); // 디버깅용
-
     if (response.data?.current_medications) {
       currentMedications.value = response.data.current_medications;
     } else {
-      console.error("current_medications 데이터가 없습니다");
       currentMedications.value = [];
     }
   } catch (error) {
     console.error("API 요청 오류:", error);
-
     if (import.meta.env.DEV) {
-      // 개발환경 테스트 데이터
       currentMedications.value = [
         {
           id: 200809361,
