@@ -4,7 +4,7 @@
       <button class="back-btn" @click="goBack">
         <span>←</span>
       </button>
-      <h1>복용약 등록</h1>
+      <h1>복용약 등록!!!!!!</h1>
     </header>
 
     <main class="main-content">
