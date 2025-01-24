@@ -8,16 +8,63 @@
     </header>
 
     <main class="main-content">
-      <h1>인식 결과</h1>
+      <h5 class="guide-text">인식 결과</h5>
+      <h4 class="med-date">약 타신 날 : 25/01/12</h4>
+      <!--Todo : 수정 필요 -->
+      <div class="med-list">
+        <div v-for="med in currentMedications" :key="med.id" class="med-item">
+          <div class="med-info">
+            <h3>{{ med.name }} (품목명)</h3>
+            <p>분류: {{ med.type }}</p>
+          </div>
+          <img :src="med.image" :alt="med.name" class="med-image" />
+        </div>
+      </div>
+      <p class="guide-message">인식 결과가 일치하다면 등록해주세요</p>
+      <div class="button-area">
+        <button class="btn" @click="goBack">재촬영</button>
+        <button class="btn" @click="handleRegister">등록</button>
+      </div>
     </main>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const goBack = () => router.back();
+
+// API 전 임시데이터입니다 !!
+const currentMedications = ref([
+  {
+    id: "mock-1",
+    name: "가두에정",
+    type: "항악성종양제",
+    image:
+      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
+  },
+  {
+    id: "mock-2",
+    name: "가두에정",
+    type: "항악성종양제",
+    image: "yakjalal/src/assets/medi1.jpg",
+  },
+  {
+    id: "mock-1",
+    name: "가두에정",
+    type: "항악성종양제",
+    image:
+      "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
+  },
+]);
+
+const handleRegister = async () => {
+  // Todo : API 연동
+  // Todo : Post 요청 API
+  router.push("/main");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -47,6 +94,95 @@ const goBack = () => router.back();
     h1 {
       font-size: 1.2rem;
       margin: 0;
+    }
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    .guide-text {
+      text-align: left;
+      font-weight: bold;
+      font-size: 20px;
+      color: #333;
+    }
+
+    .med-date {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: #333;
+      margin: 10px;
+      margin-bottom: 10px;
+    }
+
+    .med-list {
+      margin: 10px;
+      .med-item {
+        background: #26a6997d;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .med-info {
+          h3 {
+            margin: 0;
+            font-size: 1rem;
+          }
+
+          p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 0.9rem;
+          }
+        }
+
+        .med-image {
+          width: 60px;
+          height: 30px;
+          object-fit: contain;
+        }
+      }
+    }
+
+    .guide-message {
+      text-align: center;
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 20px;
+      padding: 0 20px;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .button-area {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: auto;
+      margin-bottom: 60px;
+
+      .btn {
+        flex: 1;
+        padding: 15px;
+        border-radius: 8px;
+        border: none;
+        background: #26a69a;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:active {
+          background: #26a69a;
+        }
+      }
     }
   }
 }
