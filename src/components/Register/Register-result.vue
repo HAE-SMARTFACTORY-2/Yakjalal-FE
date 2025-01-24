@@ -20,6 +20,11 @@
           <img :src="med.image" :alt="med.name" class="med-image" />
         </div>
       </div>
+      <p class="guide-message">인식 결과가 일치하다면 등록해주세요</p>
+      <div class="button-area">
+        <button class="btn" @click="goBack">재촬영</button>
+        <button class="btn" @click="handleRegister">등록</button>
+      </div>
     </main>
   </div>
 </template>
@@ -54,6 +59,12 @@ const currentMedications = ref([
       "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
   },
 ]);
+
+const handleRegister = async () => {
+  // Todo : API 연동
+  // Todo : Post 요청 API
+  router.push("/main");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -100,8 +111,12 @@ const currentMedications = ref([
     }
 
     .med-date {
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      color: #333;
       margin: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .med-list {
@@ -132,6 +147,40 @@ const currentMedications = ref([
           width: 60px;
           height: 30px;
           object-fit: contain;
+        }
+      }
+    }
+
+    .guide-message {
+      text-align: center;
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 20px;
+      padding: 0 20px;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .button-area {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: auto;
+      margin-bottom: 60px;
+
+      .btn {
+        flex: 1;
+        padding: 15px;
+        border-radius: 8px;
+        border: none;
+        background: #26a69a;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:active {
+          background: #26a69a;
         }
       }
     }

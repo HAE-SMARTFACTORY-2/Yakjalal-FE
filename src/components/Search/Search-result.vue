@@ -8,7 +8,8 @@
     </header>
 
     <main class="main-content">
-      <h3 class="guide-text">인식 결과</h3>
+      <h5 class="guide-text">인식 결과</h5>
+      <!--Todo : 수정 필요 -->
       <div class="med-list">
         <div v-for="med in currentMedications" :key="med.id" class="med-item">
           <div class="med-info">
@@ -17,6 +18,10 @@
           </div>
           <img :src="med.image" :alt="med.name" class="med-image" />
         </div>
+      </div>
+      <div class="button-area">
+        <button class="btn" @click="goBack">재촬영</button>
+        <button class="btn" @click="handleRegister">등록</button>
       </div>
     </main>
   </div>
@@ -52,6 +57,12 @@ const currentMedications = ref([
       "/Users/olynny/Desktop/현대오토에버 모빌리티 스쿨/Yakjalal-FE/src/assets/medi1.jpg",
   },
 ]);
+
+const handleRegister = async () => {
+  // Todo : API 연동
+  // Todo : Post 요청 API
+  router.push("/main");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -125,6 +136,29 @@ const currentMedications = ref([
           width: 60px;
           height: 30px;
           object-fit: contain;
+        }
+      }
+    }
+    .button-area {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: auto;
+      margin-bottom: 60px;
+
+      .btn {
+        flex: 1;
+        padding: 15px;
+        border-radius: 8px;
+        border: none;
+        background: #26a69a;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:active {
+          background: #26a69a;
         }
       }
     }
