@@ -21,7 +21,8 @@
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; // 가운데 정렬
+  gap: 120px; // 각 요소 간격 조정
   padding: 10px;
   background-color: #f8f8f8;
   box-shadow: 0 -1px 5px rgb(0 0 0 / 10%);
