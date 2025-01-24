@@ -8,7 +8,7 @@
 <script setup>
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import NavBar from "./components/Common/navbar.vue";
+import NavBar from "./components/Common/NavBar.vue";
 
 const route = useRoute();
 const hideNavBar = computed(() => route.meta.hideNavBar);
