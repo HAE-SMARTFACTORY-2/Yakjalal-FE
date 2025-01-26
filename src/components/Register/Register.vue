@@ -53,6 +53,7 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 const fileInput = ref(null);
@@ -103,12 +104,39 @@ const handleRecognize = async () => {
 
   try {
     isProcessing.value = true;
-    // 여기에 실제 이미지 인식 API 호출 로직 추가
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push("/ocr-result"); // OCR 결과 페이지로 이동 (약 봉투 등록 시)
+    uploadError.value = null;
+
+    const file = fileInput.value.files[0];
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const response = await axios.post(`${BASE_URL}/getimg/ocr`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    if (response.status === 200) {
+      console.log("이미지 업로드 성공:", response.data);
+
+      router.push({
+        path: "/ocr-result",
+        state: { medicineData: response.data },
+      });
+    } else {
+      throw new Error("서버 응답 오류");
+    }
   } catch (error) {
-    uploadError.value = "이미지 인식 중 오류가 발생했습니다.";
-    console.error("Recognition error:", error);
+    console.error("이미지 업로드 오류:", error);
+
+    if (error.response) {
+      uploadError.value = `서버 오류: ${error.response.status}`;
+    } else if (error.request) {
+      uploadError.value = "서버에 연결할 수 없습니다.";
+    } else {
+      uploadError.value = "이미지 업로드 중 오류가 발생했습니다.";
+    }
   } finally {
     isProcessing.value = false;
   }
