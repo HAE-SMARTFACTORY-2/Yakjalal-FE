@@ -15,7 +15,7 @@
       </div>
       <div class="time-container">
         <div
-          v-for="(meds, period) in todayMedications"
+          v-for="(meds, period) in todayMedications[0]"
           :key="period"
           class="period-column"
         >
@@ -27,6 +27,8 @@
               v-for="(med, idx) in meds"
               :key="`${period}-${idx}`"
               class="med-button"
+              :class="{ selected: isSelected(period, idx) }"
+              @click="toggleSelection(period, idx)"
             >
               {{ med }}
             </button>
@@ -147,6 +149,17 @@ function getPeriodEmoji(period) {
   return emojis[period] || "";
 }
 
+const selectedMeds = ref({});
+const isSelected = (period, idx) => {
+  const key = `${period}-${idx}`;
+  return !!selectedMeds.value[key];
+};
+
+const toggleSelection = (period, idx) => {
+  const key = `${period}-${idx}`;
+  selectedMeds.value[key] = !selectedMeds.value[key];
+};
+
 const navigateToInfo = (id) => {
   console.log(id);
   router.push({ name: "Info", params: { id } });
@@ -244,8 +257,9 @@ const navigateToInfo = (id) => {
             font-size: 0.9rem;
             cursor: pointer;
 
-            &:active {
+            &.selected {
               background: #e8f5e9;
+              color: black;
             }
           }
         }
