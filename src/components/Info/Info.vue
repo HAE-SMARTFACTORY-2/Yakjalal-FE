@@ -8,11 +8,37 @@
     </header>
 
     <main class="main-content">
+      <div v-if="!isTTSSupported" class="tts-warning">
+        이 브라우저는 음성 기능을 지원하지 않습니다.
+      </div>
+
       <div v-if="medicineInfo?.medicine_info?.length" class="med-info">
-        <h3 class="med-title">
-          {{ medicineInfo.medicine_info[0].name }}
-        </h3>
-        <h5 class="med-id">식별번호 : {{ medId }}</h5>
+        <div class="header-wrapper">
+          <div class="title-section">
+            <h3 class="med-title">
+              {{ medicineInfo.medicine_info[0].name }}
+            </h3>
+            <h5 class="med-id">식별번호 : {{ medId }}</h5>
+          </div>
+
+          <div class="tts-controls">
+            <button
+              @click="toggleTTS"
+              :disabled="isLoading || !isTTSSupported"
+              class="tts-button"
+            >
+              <span v-if="!isSpeaking">🔊 읽어주기</span>
+              <span v-else>⏸ 일시정지</span>
+            </button>
+            <button
+              @click="stopTTS"
+              :disabled="!isSpeaking"
+              class="tts-button stop"
+            >
+              ⏹ 정지
+            </button>
+          </div>
+        </div>
 
         <div class="image-section">
           <img
@@ -66,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 
@@ -124,7 +150,85 @@ const fetchMedicineInfo = async () => {
   }
 };
 
+const isSpeaking = ref(false);
+const isTTSSupported = ref(false);
+let speechSynth = null;
+let currentUtterance = null;
+
+const initTTS = () => {
+  if ("speechSynthesis" in window) {
+    speechSynth = window.speechSynthesis;
+    isTTSSupported.value = true;
+  } else {
+    console.warn("음성 합성이 지원되지 않습니다.");
+    isTTSSupported.value = false;
+  }
+};
+
+const generateTTSText = (info) => {
+  if (!info?.medicine_info?.[0]) return "";
+
+  const med = info.medicine_info[0];
+  return `
+    약품명: ${med.name}.
+    분류: ${med.classification}.
+    용도: ${med.type}.
+    외형: ${med.appearance}.
+    제품 규격: 모양은 ${med.shape},
+    크기는 ${med.bigSize} 곱하기 ${med.smallSize} 밀리미터,
+    두께는 ${med.thick} 밀리미터 입니다.
+  `.trim();
+};
+
+const configureTTS = (text) => {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "ko-KR";
+  utterance.rate = 0.8;
+  utterance.pitch = 1.0;
+
+  utterance.onend = () => {
+    isSpeaking.value = false;
+  };
+
+  utterance.onerror = (event) => {
+    console.error("TTS 오류:", event);
+    isSpeaking.value = false;
+  };
+
+  return utterance;
+};
+
+const toggleTTS = () => {
+  if (!isTTSSupported.value) return;
+
+  if (isSpeaking.value) {
+    speechSynth.pause();
+    isSpeaking.value = false;
+  } else {
+    if (speechSynth.paused) {
+      speechSynth.resume();
+    } else {
+      const text = generateTTSText(medicineInfo.value);
+      currentUtterance = configureTTS(text);
+      speechSynth.speak(currentUtterance);
+    }
+    isSpeaking.value = true;
+  }
+};
+
+const stopTTS = () => {
+  if (!isTTSSupported.value) return;
+
+  speechSynth.cancel();
+  isSpeaking.value = false;
+};
+
+onUnmounted(() => {
+  stopTTS();
+});
+
 onMounted(() => {
+  initTTS();
   fetchMedicineInfo();
 });
 </script>
@@ -169,20 +273,70 @@ onMounted(() => {
     width: 100%;
     box-sizing: border-box;
 
+    .tts-warning {
+      margin-top: 10px;
+      text-align: center;
+      color: #f44336;
+      font-size: 0.9rem;
+    }
+
     .med-info {
       display: flex;
       flex-direction: column;
       gap: 10px;
 
-      .med-title {
-        font-size: 1.3rem;
-        margin: 0;
-        color: #333;
-      }
+      .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        gap: 16px;
 
-      .med-id {
-        font-size: 1rem;
-        color: #666;
+        .title-section {
+          .med-title {
+            font-size: 1.3rem;
+            margin: 0 0 4px;
+            color: #333;
+            font-weight: 600;
+          }
+
+          .med-id {
+            font-size: 1rem;
+            color: #666;
+            margin: 0;
+          }
+        }
+
+        .tts-controls {
+          display: flex;
+          gap: 8px;
+          margin-top: 4px;
+
+          .tts-button {
+            background: #26a69a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+
+            &:hover:not(:disabled) {
+              background: #2bbbad;
+              transform: translateY(-1px);
+            }
+
+            &.stop {
+              background: #ef5350;
+
+              &:hover:not(:disabled) {
+                background: #f44336;
+              }
+            }
+          }
+        }
       }
 
       .image-section {
