@@ -9,14 +9,17 @@
 
     <main class="main-content">
       <h5 class="guide-text">인식 결과</h5>
-      <!--Todo : 수정 필요 -->
       <div class="med-list">
-        <div v-for="med in currentMedications" :key="med.id" class="med-item">
+        <div class="med-item">
           <div class="med-info">
-            <h3>{{ med.name }} (품목명)</h3>
-            <p>분류: {{ med.type }}</p>
+            <h3>{{ reg_results.약품이름 }}</h3>
+            <p>{{ reg_results.종류 }}</p>
           </div>
-          <img :src="med.image" :alt="med.name" class="med-image" />
+          <img
+            :src="reg_results.이미지"
+            :alt="reg_results.약품이름"
+            class="med-image"
+          />
         </div>
       </div>
       <div class="button-area">
@@ -34,30 +37,9 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const goBack = () => router.back();
 
-// API 전 임시데이터입니다 !!
-const currentMedications = ref([
-  {
-    id: "mock-1",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-  {
-    id: "mock-2",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-  {
-    id: "mock-1",
-    name: "가두에정",
-    type: "항악성종양제",
-    image:
-      "https://github.com/user-attachments/assets/977cbf95-ee26-4d59-80e6-2d7e93a48a1b",
-  },
-]);
+const medicineData = ref(history.state.medicineData);
+const reg_results = ref(history.state.medicineData.reg_results);
+console.log("데이터 확인:", reg_results.value);
 
 const handleRegister = async () => {
   // Todo : API 연동

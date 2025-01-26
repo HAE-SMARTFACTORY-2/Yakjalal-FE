@@ -239,7 +239,7 @@ const navigateToInfo = (id) => {
           .med-button {
             padding: 8px;
             border: 1px solid #26a69a;
-            border-radius: 20px;
+            border-radius: 15px;
             background: #fff;
             font-size: 0.9rem;
             cursor: pointer;
