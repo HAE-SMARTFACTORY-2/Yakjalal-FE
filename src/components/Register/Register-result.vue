@@ -32,18 +32,37 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 const goBack = () => router.back();
 
-const medicineData = ref(history.state.medicineData);
 const reg_results = ref(history.state.medicineData.reg_results);
 console.log("데이터 확인:", reg_results.value);
 
 const handleRegister = async () => {
-  // Todo : API 연동
-  // Todo : Post 요청 API
-  router.push("/main");
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const response = await axios.post(
+      `${BASE_URL}/medicine/save`,
+      reg_results.value,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("복용약 등록 성공:", response.data);
+      alert("복용약이 등록되었습니다.");
+      router.push("/main");
+    } else {
+      throw new Error("서버 응답 오류");
+    }
+  } catch (error) {
+    console.error("복용약 등록 오류:", error);
+  }
 };
 </script>
 
