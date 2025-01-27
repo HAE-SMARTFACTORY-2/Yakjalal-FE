@@ -12,11 +12,7 @@
         이 브라우저는 음성 기능을 지원하지 않습니다.
       </div>
 
-      <div
-        v-if="medicineInfo?.medicine_info?.length"
-        class="med-info"
-        @click="navigateToInfo(med.id)"
-      >
+      <div v-if="medicineInfo?.medicine_info?.length" class="med-info">
         <div class="header-wrapper">
           <div class="title-section">
             <h3 class="med-title">
