@@ -12,7 +12,11 @@
         이 브라우저는 음성 기능을 지원하지 않습니다.
       </div>
 
-      <div v-if="medicineInfo?.medicine_info?.length" class="med-info">
+      <div
+        v-if="medicineInfo?.medicine_info?.length"
+        class="med-info"
+        @click="navigateToInfo(med.id)"
+      >
         <div class="header-wrapper">
           <div class="title-section">
             <h3 class="med-title">
@@ -111,7 +115,7 @@ const fetchMedicineInfo = async () => {
 
   try {
     const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-    console.log("요청 URL:", `${BASE_URL}/medicine/${medId}`); // 디버깅용
+    console.log("요청 URL:", `${BASE_URL}/medicine/${medId}`);
 
     const response = await axios.get(`${BASE_URL}/medicine/${medId}`, {
       headers: {
@@ -120,7 +124,7 @@ const fetchMedicineInfo = async () => {
       },
     });
 
-    console.log("API 응답:", response.data); // 디버깅용
+    console.log("API 응답:", response.data);
     medicineInfo.value = response.data;
   } catch (error) {
     console.error("API 요청 오류:", error);
@@ -231,6 +235,11 @@ onMounted(() => {
   initTTS();
   fetchMedicineInfo();
 });
+
+const navigateToInfo = (id) => {
+  console.log(id);
+  router.push({ name: "Info", params: { id } });
+};
 </script>
 
 <style lang="scss" scoped>
