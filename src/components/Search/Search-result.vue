@@ -10,18 +10,22 @@
     <main class="main-content">
       <h5 class="guide-text">인식 결과</h5>
       <div class="med-list">
-        <div class="med-item">
+        <div
+          v-for="med in reg_results"
+          :key="med.id"
+          class="med-item"
+          @click="navigateToInfo(med.id)"
+        >
           <div class="med-info">
-            <h3>{{ reg_results.약품이름 }}</h3>
-            <p>{{ reg_results.종류 }}</p>
+            <h3>{{ med.약품이름 }}</h3>
+            <p>분류: {{ med.종류 }}</p>
           </div>
-          <img
-            :src="reg_results.이미지"
-            :alt="reg_results.약품이름"
-            class="med-image"
-          />
+          <img :src="med.이미지" :alt="med.약품이름" class="med-image" />
         </div>
       </div>
+      <p class="guide-message">
+        검색 결과는 다음과 같습니다.<br />복용하시는 약이라면 등록해주세요.
+      </p>
       <div class="button-area">
         <button class="btn" @click="goBack">재촬영</button>
         <button class="btn" @click="handleRegister">등록</button>
@@ -33,18 +37,42 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import axios from "axios";
 
 const router = useRouter();
 const goBack = () => router.back();
 
-const medicineData = ref(history.state.medicineData);
 const reg_results = ref(history.state.medicineData.reg_results);
 console.log("데이터 확인:", reg_results.value);
 
 const handleRegister = async () => {
-  // Todo : API 연동
-  // Todo : Post 요청 API
-  router.push("/main");
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    const response = await axios.post(
+      `${BASE_URL}/medicine/save`,
+      reg_results.value,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      console.log("복용약 등록 성공:", response.data);
+      alert("복용약이 등록되었습니다.");
+      router.push("/main");
+    } else {
+      throw new Error("서버 응답 오류");
+    }
+  } catch (error) {
+    console.error("복용약 등록 오류:", error);
+  }
+};
+
+const navigateToInfo = (id) => {
+  console.log(id);
+  router.push({ name: "Info", params: { id } });
 };
 </script>
 
@@ -122,6 +150,16 @@ const handleRegister = async () => {
           object-fit: contain;
         }
       }
+    }
+
+    .guide-message {
+      text-align: center;
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 20px;
+      padding: 0 20px;
+      line-height: 1.4;
+      font-weight: 500;
     }
 
     .button-area {
