@@ -11,7 +11,12 @@
       <h5 class="guide-text">인식 결과</h5>
       <h4 class="med-date">약 타신 날 : {{ reg_results.처방일자 }}</h4>
       <div class="med-list">
-        <div v-for="med in reg_results.처방약품" :key="med.id" class="med-item">
+        <div
+          v-for="med in reg_results.처방약품"
+          :key="med.id"
+          class="med-item"
+          @click="navigateToInfo(med[5])"
+        >
           <div class="med-info">
             <h3>{{ med[0] }}</h3>
             <p>분류: {{ med[2] }}</p>
@@ -63,6 +68,11 @@ const handleRegister = async () => {
   } catch (error) {
     console.error("복용약 등록 오류:", error);
   }
+};
+
+const navigateToInfo = (id) => {
+  console.log(id);
+  router.push({ name: "Info", params: { id } });
 };
 </script>
 
