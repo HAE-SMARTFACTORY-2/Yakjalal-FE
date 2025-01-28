@@ -42,7 +42,7 @@ import axios from "axios";
 const router = useRouter();
 const goBack = () => router.back();
 
-const reg_results = ref(history.state.medicineData.reg_results);
+const reg_results = ref(history.state.medicineData.처방약품);
 console.log("데이터 확인:", reg_results.value);
 
 const handleRegister = async () => {
