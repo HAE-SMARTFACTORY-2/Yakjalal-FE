@@ -117,11 +117,9 @@ const handleRecognize = async () => {
       },
     });
 
-    // 응답 처리
     if (response.status === 200) {
       console.log("이미지 업로드 성공:", response.data);
 
-      // 응답 데이터를 state로 전달하며 페이지 이동
       router.push({
         path: "/search-result",
         state: { medicineData: response.data },
@@ -132,7 +130,6 @@ const handleRecognize = async () => {
   } catch (error) {
     console.error("이미지 업로드 오류:", error);
 
-    // 구체적인 에러 메시지 처리
     if (error.response) {
       uploadError.value = `서버 오류: ${error.response.status}`;
     } else if (error.request) {

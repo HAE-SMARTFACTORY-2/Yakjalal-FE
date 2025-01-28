@@ -53,6 +53,13 @@
           <img :src="med.image" :alt="med.name" class="med-image" />
         </div>
       </div>
+      <button
+        v-if="currentMedications.length > 0"
+        @click="confirmDelete"
+        class="delete-all-btn"
+      >
+        전체 삭제
+      </button>
     </section>
   </div>
 </template>
@@ -130,6 +137,36 @@ const fetchMyMedications = async () => {
     } else {
       currentMedications.value = [];
     }
+  } finally {
+    isLoading.value = false;
+  }
+};
+
+const confirmDelete = async () => {
+  const isConfirmed = confirm("정말로 모든 약을 삭제하시겠습니까?");
+
+  if (!isConfirmed) return;
+
+  isLoading.value = true;
+
+  try {
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+    await axios.post(`${BASE_URL}/clear`, {
+      headers: {
+        "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "true",
+      },
+    });
+
+    currentMedications.value = [];
+
+    await Promise.all([fetchTodayMedications(), fetchMyMedications()]);
+
+    alert("모든 약이 성공적으로 삭제되었습니다.");
+  } catch (error) {
+    console.error("삭제 중 오류 발생:", error);
+    alert("약 삭제 중 오류가 발생했습니다. 다시 시도해주세요.");
   } finally {
     isLoading.value = false;
   }
@@ -270,6 +307,17 @@ const navigateToInfo = (id) => {
   .current-medications {
     padding: 20px;
     padding-top: 0;
+
+    .delete-all-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.6rem;
+      transition: background-color 0.2s ease;
+    }
 
     .med-list {
       padding-top: 10px;
